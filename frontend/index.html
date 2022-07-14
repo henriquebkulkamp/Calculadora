@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css" />
+	<title>Calculadora Black</title>
+
+</head>
+
+<body>
+	<div class="main">
+		<form action="" name="Calculator">
+
+			<input id="tela" type="text" class="text maincolor" 
+					name="text1" value="0">
+
+			<input id="c" type="text" class="text1 maincolor" 
+					name="text12" value="C"><br>
+			<input id="numero-9" type="button" class="num maincolor" 
+					name="btn9" value="9">
+			<input id="numero-8" type="button" class="num maincolor" 
+					name="btn8" value="8">
+			<input id="numero-7" type="button" class="num maincolor" 
+					name="btn7" value="7">
+			<input id="somar" type="button" class="num blue" 
+					name="addbtn" value="+"><br>
+
+			<input id="numero-6" type="button" class="num maincolor" 
+					name="btn6" value="6">
+			<input id="numero-5" type="button" class="num maincolor" 
+					name="btn5" value="5">
+			<input id="numero-4" type="button" class="num maincolor" 
+					name="btn4" value="4">
+			<input id="subtrair" type="button" class="num pin" 
+					name="subbtn" value="-"><br>
+
+			<input id="numero-3" type="button" class="num maincolor" 
+					name="btn3" value="3">
+			<input id="numero-2" type="button" class="num maincolor" 
+					name="btn2" value="2">
+			<input id="numero-1" type="button" class="num maincolor" 
+					name="btn1" value="1">
+			<input id="multiplicar" type="button" class="num gre" 
+					name="mulbtn" value="*"><br>
+
+			<input id="ponto" type="button" class="num maincolor" 
+					name="dot" value=".">
+			<input id="numero-0" type="button" class="num maincolor" 
+					name="btn0" value="0">
+			<input id="igual" type="button" class="num pur" 
+					name="eqlbtn" value="=">
+			<input id="dividir" type="button" class="num ora" 
+					name="divbtn" value="/"><br>
+		</form>
+	</div>
+
+<script>
+
+// cuidar dos numeros
+let calculatorsNumbers = []
+let num = ""
+
+for (let i=0; i<10; i++) {
+    document.getElementById(`numero-${i}`).addEventListener("click", function() {
+        console.log(`Voce apertou o numero ${i}`)
+        num += `${i}`
+        console.log(num)
+        display(num)
+    })
+}
+
+// cuidar dos operadores
+// mais
+let operation = []
+
+function operate( type, symbol ) {
+    document.getElementById(type).addEventListener('click', function() {
+        if (num == "") {
+            operation[operation.length - 1] = symbol
+            console.log(`> Array de números: ${calculatorsNumbers}`)
+            console.log(`> Array de operadores: ${operation}`)
+            return
+        }
+
+        if (num.charAt() == ".") { num.charAt == "" }
+
+        calculatorsNumbers.push(num)
+        num = ""
+        operation.push(symbol)
+        console.log(`> Array de números: ${calculatorsNumbers}`)
+        console.log(`> Array de operadores: ${operation}`)
+    })
+}
+
+operate('somar', '+')
+operate('subtrair', '-')
+operate('multiplicar', '*')
+operate('dividir', '/')
+
+
+document.getElementById('ponto').addEventListener('click', function() {
+    if (!num.includes(".")) {
+        num += "."
+        console.log('> Você pressionou a tecla .')
+        console.log(num)
+    }
+})
+
+document.getElementById('c').addEventListener('click', function() {
+    operation = []
+    num = ""
+    calculatorsNumbers = []
+    display('0')
+})
+
+// igual
+
+document.getElementById('igual').addEventListener('click', function() {
+    if (operation.length == 0 || num == "") { console.log("operação indevida"); return }
+    calculatorsNumbers.push(num)
+    request() 
+})
+
+function request() {
+    const url = "http://localhost:2/fazer calculo"
+    const inits = {
+        method: "POST",
+        operation: `${operation}`,
+        calculatorsNumbers: `${calculatorsNumbers}`
+    }
+
+    console.log(inits)
+    fetch(url, inits)
+      .then(function(response) {
+        console.log(response)
+        display(response)
+      })
+}
+
+//display
+function display(text) {
+    document.getElementById('tela').value = text
+}
+</script>
+</body>
+</html>

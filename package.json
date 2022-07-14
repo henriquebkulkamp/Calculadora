@@ -1,0 +1,24 @@
+{
+  "name": "calculadora",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "asdha": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henriquebkulkamp/Calculadora.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/henriquebkulkamp/Calculadora/issues"
+  },
+  "homepage": "https://github.com/henriquebkulkamp/Calculadora#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
