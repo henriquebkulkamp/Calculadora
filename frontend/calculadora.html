@@ -58,21 +58,29 @@
 
 <script>
 
-// cuidar dos numeros
+// globals variables
+let changeNum = false
 let calculatorsNumbers = []
 let num = ""
+
+// listeners
 
 for (let i=0; i<10; i++) {
     document.getElementById(`numero-${i}`).addEventListener("click", function() {
         console.log(`Voce apertou o numero ${i}`)
+        
+        if(changeNum || num[0] == '0') {
+            changeNum = false
+            num = `${i}`
+        } else {
         num += `${i}`
+        }
+
         console.log(num)
         display(num)
     })
 }
 
-// cuidar dos operadores
-// mais
 let operation = []
 
 function operate( type, symbol ) {
@@ -115,34 +123,46 @@ document.getElementById('c').addEventListener('click', function() {
     display('0')
 })
 
-// igual
-
 document.getElementById('igual').addEventListener('click', function() {
     if (operation.length == 0 || num == "") { console.log("operação indevida"); return }
     calculatorsNumbers.push(num)
     request() 
 })
 
+// functions
+
+function display(text) {
+    document.getElementById('tela').value = text
+}
+
 function request() {
-    const url = "http://localhost:2/fazer calculo"
+    const url = "http://localhost:2/calculo"
+
+    const myHeaders = new Headers
+
+    myHeaders.append("operation", `${operation}`)
+    
+    myHeaders.append("operators", `${calculatorsNumbers}`)
+
     const inits = {
-        method: "POST",
-        operation: `${operation}`,
-        calculatorsNumbers: `${calculatorsNumbers}`
+        method: "GET",
+        headers: myHeaders
     }
 
     console.log(inits)
     fetch(url, inits)
-      .then(function(response) {
-        console.log(response)
-        display(response)
+      .then(response => response.json())
+      .then(data => {
+        const result = (data.numbers).toString()
+        display(result)
+
+        operation = []
+        num = result
+        calculatorsNumbers = []
+        changeNum = true
       })
 }
 
-//display
-function display(text) {
-    document.getElementById('tela').value = text
-}
 </script>
 </body>
 </html>
